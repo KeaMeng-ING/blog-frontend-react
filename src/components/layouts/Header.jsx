@@ -13,13 +13,13 @@ export default function Navbar() {
     <header className="px-5 py-3 bg-white shadow-sm font-poppins">
       <nav className="flex justify-between items-center">
         <NavLink to="/">
-          <img src="/logo.png" alt="logo" />
+          <img src="/logo.png" alt="logo" className="w-30" />
         </NavLink>
         <div className="flex items-center gap-5 text-black">
           {user ? (
             <>
               <NavLink to="/blog/create">
-                <span className="font-bold">Create</span>
+                <span className="font-bold ">Create</span>
               </NavLink>
 
               <NavLink
@@ -32,7 +32,9 @@ export default function Navbar() {
 
               {/* TODO: TO be Update */}
               <NavLink href="#">
-                <span className="font-bold cursor-pointer">{user?.name}</span>
+                <span className="font-bold cursor-pointer">
+                  {user.firstName}
+                </span>
               </NavLink>
             </>
           ) : (

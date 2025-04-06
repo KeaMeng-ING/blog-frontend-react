@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../hook/useAuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { loading, setLoading, setUser } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,8 +21,6 @@ export default function Login() {
         "https://blog-backend-l4jw.onrender.com/api/users/login",
         { email, password }
       );
-
-      console.log(response.data);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(
@@ -51,6 +51,7 @@ export default function Login() {
       }
     } finally {
       setLoading(false);
+      navigate("/");
     }
   };
   return (
@@ -110,7 +111,7 @@ export default function Login() {
 
         <div className="h-[1px] bg-gray-300 my-5"></div>
         <div className="px-6"></div>
-        <p className="text-center m-5 font-bold">
+        <p className="text-center m-5 font-bold text-black">
           Don&apos;t have an account?
           <NavLink to="/sign-up">
             <span className="text-my-primary cursor-pointer"> Sign Up</span>
