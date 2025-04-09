@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useAuthContext } from "../hook/useAuthContext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useState } from "react";
+import BlogCard from "./BlogCard";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -28,13 +27,35 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  if (posts.length === 0) {
-    return <p className="text-gray-500">No posts available.</p>;
-  }
+  const renderBlogSection = () => {
+    if (loading) {
+      return (
+        <div className="flex flex-col justify-center items-center min-h-[400px] bg-white  text-gray-900 dark:text-gray-100">
+          <div className="w-12 h-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
+          <h2 className="text-xl font-semibold">Loading</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
+            Please wait....
+          </p>
+        </div>
+      );
+    }
 
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
+    if (error) {
+      return <p className="text-red-500">{error}</p>;
+    }
+
+    if (posts.length === 0) {
+      return <p className="text-gray-500">No posts available.</p>;
+    }
+
+    return (
+      <ul className="mt-7 card_grid">
+        {posts.map((post) => (
+          <BlogCard key={post.id} post={post} />
+        ))}
+      </ul>
+    );
+  };
 
   return (
     <>
@@ -57,13 +78,9 @@ const Home = () => {
       <section className="section_container">
         <p className="font-bold text-3xl">
           {/* {query ? `Search results for "${query}"` : "All Blogs"} */}
+          All Blogs
         </p>
-        <ul className="mt-7 card_grid">
-          {posts.map((post) => (
-            <h2> {post.title}</h2>
-            // <BlogCard key={post.id} post={post} />
-          ))}
-        </ul>
+        {renderBlogSection()}
       </section>
     </>
   );
