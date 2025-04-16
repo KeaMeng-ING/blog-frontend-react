@@ -14,7 +14,6 @@ const Home = () => {
         const response = await axios.get(
           "https://blog-backend-l4jw.onrender.com/api/posts"
         );
-        console.log(response.data.posts);
         setPosts(response.data.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -32,10 +31,8 @@ const Home = () => {
       return (
         <div className="flex flex-col justify-center items-center min-h-[400px] bg-white  text-gray-900 dark:text-gray-100">
           <div className="w-12 h-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
-          <h2 className="text-xl font-semibold">Loading</h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Please wait....
-          </p>
+          <h2 className="text-xl font-semibold text-my-primary">Loading</h2>
+          <p className="text-black  mt-1">Please wait....</p>
         </div>
       );
     }

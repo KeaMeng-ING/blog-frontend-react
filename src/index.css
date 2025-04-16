@@ -8,6 +8,12 @@
   --color-my-primary-100: #ffe8f0;
 }
 
+.Dropdown-control {
+  border: none !important;
+  box-shadow: none !important; /* Remove any shadow if present */
+  padding: 0 !important; /* Remove padding */
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -229,11 +235,11 @@
   }
 
   .startup-form_input {
-    @apply border-[3px] border-black px-5 py-7 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-black;
+    @apply border-[3px] border-black px-5 py-5 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-black;
   }
 
   .startup-form_textarea {
-    @apply border-[3px] border-black p-5 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-black;
+    @apply border-[3px] border-black p-5 pb-7 pt-6 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-black;
   }
 
   .startup-form_error {
@@ -245,6 +251,20 @@
   }
 
   .startup-form_btn {
-    @apply bg-primary border-[4px] border-black rounded-full p-5 min-h-[70px] w-full font-bold text-[18px];
+    @apply bg-my-primary border-[4px] border-black rounded-full p-3 min-h-[70px] w-5/12 font-bold text-[18px];
+  }
+
+  .flex-col {
+    @apply flex flex-col;
+  }
+
+  .Dropdown-control {
+    @apply rounded-full p-5 text-[18px] text-black font-semibold placeholder:text-black;
+  }
+
+  .image-upload {
+    @apply cursor-pointer w-full md:w-64 h-32 border-2 border-dashed
+      border-gray-300 rounded-xl flex items-center justify-center text-gray-500
+      hover:border-blue-500 hover:text-blue-500 transition;
   }
 }

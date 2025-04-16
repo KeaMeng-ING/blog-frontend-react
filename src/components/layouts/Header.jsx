@@ -25,7 +25,7 @@ export default function Navbar() {
               <NavLink
                 className="font-bold cursor-pointer"
                 onClick={handleLogout}
-                to={"/sign-in"}
+                to={"/"}
               >
                 <span className="font-bold cursor-pointer">Log Out</span>
               </NavLink>
@@ -39,10 +39,10 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <NavLink to="sign-in">
+              <NavLink to="/sign-in">
                 <button className="font-bold cursor-pointer">Log In</button>
               </NavLink>
-              <NavLink to="sign-up">
+              <NavLink to="/sign-up">
                 <button className="font-bold cursor-pointer">
                   Get Started
                 </button>

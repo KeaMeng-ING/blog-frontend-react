@@ -1,9 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import { EyeIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import { NavLink } from "react-router-dom";
 
-const BlogCard = ({ post }) => {
+const BlogCard = memo(({ post }) => {
   const {
     title,
     createdAt,
@@ -66,12 +66,12 @@ const BlogCard = ({ post }) => {
         <NavLink href="#">
           <p className=" font-medium text-lg">{categoryName}</p>
         </NavLink>
-        <button className="startup-card_btn" asChild>
+        <button className="startup-card_btn">
           <NavLink href="#">Details</NavLink>
         </button>
       </div>
     </li>
   );
-};
+});
 
 export default BlogCard;

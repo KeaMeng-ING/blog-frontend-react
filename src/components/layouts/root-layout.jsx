@@ -26,6 +26,7 @@ export default function RootLayout() {
         toggleDarkMode={toggleDarkMode}
         loggedIn={user ? true : false}
       />
+
       <Outlet />
     </>
   );
