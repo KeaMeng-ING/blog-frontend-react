@@ -4,6 +4,9 @@ import "react-dropdown/style.css";
 import { useState } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
+import { useAuthContext } from "../hook/useAuthContext";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const BlogForm = () => {
   // const [pitch, setPitch] = useState("");
@@ -15,6 +18,7 @@ const BlogForm = () => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const { logout } = useAuthContext();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -28,6 +32,9 @@ const BlogForm = () => {
       } catch (error) {
         console.error("Error fetching categories:", error);
         setError("Failed to fetch categories. Please try again later.");
+        if (error.response.data == "Forbidden") {
+          logout();
+        }
       } finally {
         setLoading(false);
       }
@@ -37,16 +44,10 @@ const BlogForm = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center min-h-[400px] bg-white  text-gray-900 dark:text-gray-100">
-        <div className="w-12 h-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
-        <h2 className="text-xl font-semibold text-my-primary">Loading</h2>
-        <p className="text-black  mt-1">Please wait....</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <ErrorMessage error={error} />;
   }
 
   const options = categories.map((category) => ({

@@ -267,4 +267,28 @@
       border-gray-300 rounded-xl flex items-center justify-center text-gray-500
       hover:border-blue-500 hover:text-blue-500 transition;
   }
+
+  .section_container {
+    @apply px-6 py-10 max-w-7xl mx-auto;
+  }
+
+  .text-20-medium {
+    @apply font-medium text-[20px] text-black;
+  }
+
+  .text-16-medium {
+    @apply font-medium text-[16px] text-black;
+  }
+
+  .category-tag {
+    @apply font-medium text-[16px] bg-my-primary-100 px-4 py-2 rounded-full;
+  }
+
+  .divider {
+    @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
+  }
+
+  .card_grid-sm {
+    @apply grid sm:grid-cols-2 gap-5;
+  }
 }

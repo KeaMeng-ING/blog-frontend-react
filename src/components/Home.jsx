@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BlogCard from "./BlogCard";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -28,17 +30,11 @@ const Home = () => {
 
   const renderBlogSection = () => {
     if (loading) {
-      return (
-        <div className="flex flex-col justify-center items-center min-h-[400px] bg-white  text-gray-900 dark:text-gray-100">
-          <div className="w-12 h-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
-          <h2 className="text-xl font-semibold text-my-primary">Loading</h2>
-          <p className="text-black  mt-1">Please wait....</p>
-        </div>
-      );
+      return <LoadingSpinner />;
     }
 
     if (error) {
-      return <p className="text-red-500">{error}</p>;
+      return <ErrorMessage error={error} />;
     }
 
     if (posts.length === 0) {

@@ -9,15 +9,15 @@ const BlogCard = memo(({ post }) => {
     createdAt,
     author,
     imageUrl,
-
     subtitle,
     views,
     categoryName,
+    slug,
   } = post;
 
   return (
-    <li className="startup-card group ">
-      <div className=" flex justify-between items-center">
+    <NavLink to={`/blog/${slug}`} className="startup-card group">
+      <div className="flex justify-between items-center">
         <p className="startup-card_date text-black">{formatDate(createdAt)}</p>
         <div className="flex gap-1.5">
           <EyeIcon className="size-6 text-my-primary" />
@@ -28,16 +28,17 @@ const BlogCard = memo(({ post }) => {
 
       <div className="flex justify-between mt-5 gap-5">
         <div className="flex-1">
-          <NavLink href="#">
+          {/* Use div or span to avoid nesting anchors */}
+          <div>
             <p className="font-medium text-lg line-clamp-1">{author}</p>
-          </NavLink>
-          <NavLink href="#">
+          </div>
+          <div>
             <h3 className="font-semibold text-xl line-clamp-2 h-[56px]">
               {title}
             </h3>
-          </NavLink>
+          </div>
         </div>
-        <NavLink href="#">
+        <div>
           {/* <Image
             src={image_url}
             alt={author}
@@ -46,10 +47,10 @@ const BlogCard = memo(({ post }) => {
             className="rounded-full"
           /> */}
           <h1>author</h1>
-        </NavLink>
+        </div>
       </div>
 
-      <NavLink href="#">
+      <div>
         <p className="startup-card_desc">{subtitle}</p>
 
         {/* TODO: To be updated */}
@@ -60,17 +61,15 @@ const BlogCard = memo(({ post }) => {
           alt="placeholder"
           className="startup-card_img"
         />
-      </NavLink>
+      </div>
 
       <div className="flex justify-between gap-3 mt-5 items-center">
-        <NavLink href="#">
-          <p className=" font-medium text-lg">{categoryName}</p>
-        </NavLink>
-        <button className="startup-card_btn">
-          <NavLink href="#">Details</NavLink>
-        </button>
+        <div>
+          <p className="font-medium text-lg">{categoryName}</p>
+        </div>
+        <button className="startup-card_btn">Details</button>
       </div>
-    </li>
+    </NavLink>
   );
 });
 
