@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../hook/useAuthContext";
@@ -15,6 +15,7 @@ const BlogDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { logout } = useAuthContext();
+  const hasIncrementedView = useRef(false);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -24,11 +25,20 @@ const BlogDetail = () => {
           `https://blog-backend-l4jw.onrender.com/api/posts/${slug}`
         );
 
+        // Store the blog data
         setBlog(response.data.post);
         setSameAuthorBlogs(response.data.postsFromSameAuthor);
+
+        // Only increment view if not already viewed and not incremented in this mount
+        if (!hasIncrementedView.current) {
+          hasIncrementedView.current = true; // Mark as attempted
+          await axios.put(
+            `https://blog-backend-l4jw.onrender.com/api/posts/${slug}/incrementViews`
+          );
+        }
       } catch (err) {
         console.error("Error fetching blog:", err);
-        if (err.response.data == "Forbidden") {
+        if (err.response?.data === "Forbidden") {
           logout();
         }
         setError("Failed to fetch blog details. Please try again later.");
@@ -39,6 +49,10 @@ const BlogDetail = () => {
 
     fetchBlog();
   }, [slug, logout]);
+
+  useEffect(() => {
+    hasIncrementedView.current = false;
+  }, [slug]);
 
   if (loading) {
     return <LoadingSpinner />;
