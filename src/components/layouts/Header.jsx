@@ -31,8 +31,9 @@ export default function Navbar() {
               </NavLink>
 
               {/* TODO: TO be Update */}
-              <NavLink href="#">
+              <NavLink to={`/profile/${user.userName}`}>
                 <span className="font-bold cursor-pointer">
+                  {/* Should be image */}
                   {user.firstName}
                 </span>
               </NavLink>

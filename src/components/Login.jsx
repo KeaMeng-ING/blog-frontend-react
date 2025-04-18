@@ -22,6 +22,8 @@ export default function Login() {
         { email, password }
       );
 
+      console.log(response);
+
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(
         "user",
@@ -30,6 +32,7 @@ export default function Login() {
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           email: response.data.email,
+          userName: response.data.userName,
         })
       );
 
@@ -41,6 +44,7 @@ export default function Login() {
         firstName: response.data.firstName,
         lastName: response.data.lastName,
         email: response.data.email,
+        userName: response.data.userName,
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {

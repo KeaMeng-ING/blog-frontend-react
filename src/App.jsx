@@ -8,6 +8,7 @@ import Home from "./components/Home.jsx";
 import BlogForm from "./components/BlogForm.jsx";
 import { BlogProvider } from "./context/BlogContext.jsx";
 import BlogDetail from "./components/BlogDetail.jsx";
+import ProfileDetail from "./components/ProfileDetail.jsx";
 
 function App() {
   return (
@@ -15,7 +16,12 @@ function App() {
       <BlogProvider>
         <Routes>
           <Route path="/" element={<RootLayout />}>
-            <Route element={<ProtectedRoute />}></Route>
+            <Route element={<ProtectedRoute />}>
+              <Route
+                path="/profile/:username"
+                element={<ProfileDetail />}
+              ></Route>
+            </Route>
             <Route path="/" element={<Home />}></Route>
           </Route>
           <Route path="/blog" element={<RootLayout />}>
