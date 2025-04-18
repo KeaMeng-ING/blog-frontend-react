@@ -25,7 +25,7 @@ const BlogForm = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://blog-backend-l4jw.onrender.com/api/posts/category"
+          "https://blog-backend-0th4.onrender.com/api/posts/category"
         );
         console.log(response.data.categories);
         setCategories(response.data.categories);
@@ -106,7 +106,7 @@ const BlogForm = () => {
 
       // Send the blog data as JSON
       await axios.post(
-        "https://blog-backend-l4jw.onrender.com/api/posts",
+        "https://blog-backend-0th4.onrender.com/api/posts",
         blogData,
         {
           headers: {

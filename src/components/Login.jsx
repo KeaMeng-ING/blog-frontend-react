@@ -18,11 +18,11 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://blog-backend-l4jw.onrender.com/api/users/login",
+        "https://blog-backend-0th4.onrender.com/api/users/login",
         { email, password }
       );
 
-      console.log(response);
+      console.log(response.data);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(
@@ -30,9 +30,9 @@ export default function Login() {
         JSON.stringify({
           id: response.data.id,
           firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          email: response.data.email,
-          userName: response.data.userName,
+          // lastName: response.data.lastName,
+          // email: response.data.email,
+          userName: response.data.username,
         })
       );
 
@@ -42,9 +42,8 @@ export default function Login() {
 
       setUser({
         firstName: response.data.firstName,
-        lastName: response.data.lastName,
-        email: response.data.email,
-        userName: response.data.userName,
+        id: response.data.id,
+        userName: response.data.username,
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {

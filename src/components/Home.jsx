@@ -14,7 +14,7 @@ const Home = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://blog-backend-l4jw.onrender.com/api/posts"
+          "https://blog-backend-0th4.onrender.com/api/posts"
         );
         setPosts(response.data.posts);
       } catch (error) {

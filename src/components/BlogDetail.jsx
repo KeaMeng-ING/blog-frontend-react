@@ -22,7 +22,7 @@ const BlogDetail = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://blog-backend-l4jw.onrender.com/api/posts/${slug}`
+          `https://blog-backend-0th4.onrender.com/api/posts/${slug}`
         );
 
         // Store the blog data
@@ -33,7 +33,7 @@ const BlogDetail = () => {
         if (!hasIncrementedView.current) {
           hasIncrementedView.current = true; // Mark as attempted
           await axios.put(
-            `https://blog-backend-l4jw.onrender.com/api/posts/${slug}/incrementViews`
+            `https://blog-backend-0th4.onrender.com/api/posts/${slug}/incrementViews`
           );
         }
       } catch (err) {
