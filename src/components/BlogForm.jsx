@@ -86,6 +86,26 @@ const BlogForm = () => {
       const title = e.target.title.value;
       const subtitle = e.target.description.value; // Using description as subtitle
       const content = e.target.content.value;
+
+      // Validate inputs
+      if (!title) {
+        setError("Title is required");
+        setIsPending(false);
+        return;
+      }
+
+      if (!content) {
+        setError("Content is required");
+        setIsPending(false);
+        return;
+      }
+
+      if (!selectedOption || !selectedOption.value) {
+        setError("Please select a category");
+        setIsPending(false);
+        return;
+      }
+
       const categoryId = selectedOption?.value;
 
       let imageData = null;

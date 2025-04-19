@@ -30,8 +30,7 @@ export default function Login() {
         JSON.stringify({
           id: response.data.id,
           firstName: response.data.firstName,
-          // lastName: response.data.lastName,
-          // email: response.data.email,
+          imageUrl: response.data.imageUrl,
           userName: response.data.username,
         })
       );
@@ -44,6 +43,7 @@ export default function Login() {
         firstName: response.data.firstName,
         id: response.data.id,
         userName: response.data.username,
+        imageUrl: response.data.imageUrl,
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {

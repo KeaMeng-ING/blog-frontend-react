@@ -1,0 +1,3 @@
+image upload not working when creating from
+
+after submit form it not direct or navigate to home 

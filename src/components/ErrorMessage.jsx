@@ -7,15 +7,15 @@ const ErrorMessage = ({ error }) => {
         <div class="text-red-600 bg-my-primary-100 rounded-full p-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-24 h-24"
+            className="w-24 h-24" // Use [className](http://_vscodecontentref_/6) instead of [class](http://_vscodecontentref_/7)
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2" // Use `strokeWidth` instead of [stroke-width](http://_vscodecontentref_/8)
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round" // Use `strokeLinecap` instead of [stroke-linecap](http://_vscodecontentref_/9)
+              strokeLinejoin="round" // Use `strokeLinejoin` instead of [stroke-linejoin](http://_vscodecontentref_/10)
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
