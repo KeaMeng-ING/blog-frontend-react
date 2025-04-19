@@ -9,6 +9,8 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [query, setQuery] = useState("");
 
   // TODO: We can change all Blog to recommend/trending Blog based on views
   useEffect(() => {
@@ -31,6 +33,27 @@ const Home = () => {
     fetchPosts();
   }, []);
 
+  const handleSearch = () => {
+    if (!query.trim()) {
+      setFilteredPosts(posts);
+      return;
+    }
+
+    const searchResults = posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(query.toLowerCase()) ||
+        post.content.toLowerCase().includes(query.toLowerCase()) ||
+        (post.author && post.author.toLowerCase().includes(query.toLowerCase()))
+    );
+    console.log(searchResults);
+    setFilteredPosts(searchResults);
+  };
+
+  // Run search when query changes
+  useEffect(() => {
+    handleSearch();
+  }, [query]);
+
   const renderBlogSection = () => {
     if (loading) {
       return <LoadingSpinner />;
@@ -40,13 +63,22 @@ const Home = () => {
       return <ErrorMessage error={error} />;
     }
 
-    if (posts.length === 0) {
-      return <p className="text-gray-500">No posts available.</p>;
+    // Change this section to use filteredPosts instead of posts
+    const postsToDisplay = query ? filteredPosts : posts;
+
+    if (postsToDisplay.length === 0) {
+      return (
+        <p className="text-gray-500">
+          {query
+            ? "No posts found matching your search."
+            : "No posts available."}
+        </p>
+      );
     }
 
     return (
       <ul className="mt-7 card_grid">
-        {posts.map((post) => (
+        {postsToDisplay.map((post) => (
           <BlogCard key={post.id} post={post} />
         ))}
       </ul>
@@ -68,13 +100,12 @@ const Home = () => {
           passionate writers
         </p>
 
-        <SearchForm query={"sdfdf"} />
+        <SearchForm query={query} setQuery={setQuery} />
       </section>
 
       <section className="section_container">
         <p className="font-bold text-3xl">
-          {/* {query ? `Search results for "${query}"` : "All Blogs"} */}
-          All Blogs
+          {query ? `Search results for "${query}"` : "All Blogs"}
         </p>
         {renderBlogSection()}
       </section>

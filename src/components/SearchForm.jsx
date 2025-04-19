@@ -1,30 +1,39 @@
+// In SearchForm.js
 import React from "react";
 import { Search } from "lucide-react";
 import { X } from "lucide-react";
-import { NavLink } from "react-router-dom";
 
-const SearchForm = ({ query }) => {
-  console.log(query);
-  const reset = () => {
-    const form = document.querySelector(".search-form");
+const SearchForm = ({ query, setQuery }) => {
+  // Added setQuery prop
 
-    if (form) form.reset();
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
+
+  const reset = () => {
+    setQuery("");
+  };
+
   return (
-    <form action="/" scroll={false} className="search-form">
+    <form onSubmit={handleSubmit} className="search-form">
       <input
         name="query"
-        defaultValue={query}
+        value={query} // Changed from defaultValue to value for controlled component
+        onChange={(e) => setQuery(e.target.value)} // Add onChange handler
         className="search-input"
-        placeholder="Search Startups"
+        placeholder="Search Blogs" // Changed from "Search Startups"
       />
 
       <div className="flex gap-2">
         {query && (
-          <button type="reset" onClick={reset}>
-            <NavLink href="/" className="search-btn text-white">
+          <button type="button" onClick={reset}>
+            {" "}
+            {/* Changed from reset to button type */}
+            <span className="search-btn text-white">
+              {" "}
+              {/* Changed NavLink to span */}
               <X className="size-5" />
-            </NavLink>
+            </span>
           </button>
         )}
         <button type="submit" className="search-btn text-white">

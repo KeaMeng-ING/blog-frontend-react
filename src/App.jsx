@@ -8,6 +8,7 @@ import Home from "./components/Home.jsx";
 import BlogForm from "./components/BlogForm.jsx";
 import { BlogProvider } from "./context/BlogContext.jsx";
 import BlogDetail from "./components/BlogDetail.jsx";
+import SignUp from "./components/SignUp.jsx";
 import ProfileDetail from "./components/ProfileDetail.jsx";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/sign-in" element={<Login />}></Route>
+          <Route path="/sign-up" element={<SignUp />}></Route>
         </Routes>
       </BlogProvider>
     </>
