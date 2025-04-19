@@ -5,9 +5,10 @@ import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
 import BlogCard from "./BlogCard";
+import { handleApiError } from "../lib/handleApiError";
 
 const ProfileDetail = () => {
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
   //  Get userName from params
   const { username } = useParams();
   const [loading, setLoading] = useState(true);
@@ -24,12 +25,12 @@ const ProfileDetail = () => {
         setPosts(response.data.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
-        setError("Failed to fetch posts. Please try again later.");
+        // setError("Failed to fetch posts. Please try again later.");
+        handleApiError(error, logout, setError);
       } finally {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, [username]);
 
@@ -49,7 +50,11 @@ const ProfileDetail = () => {
     return (
       <ul className="card_grid-sm">
         {posts.map((post) => (
-          <BlogCard key={post.id} post={post} />
+          <BlogCard
+            key={post.id}
+            post={post}
+            className={"profile-startup-card"}
+          />
         ))}
       </ul>
     );

@@ -173,7 +173,11 @@
   }
 
   .startup-card {
-    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-xl  transition duration-500 hover:shadow-2xl hover:bg-my-primary-100 hover:border-my-primary border-r-[10px] border-b-[10px];
+    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-xl  transition duration-500  hover:bg-my-primary-100 hover:border-my-primary border-r-[10px] border-b-[10px] w-[400px];
+  }
+
+  .profile-startup-card {
+    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-xl  transition duration-500  hover:bg-my-primary-100 hover:border-my-primary;
   }
 
   .startup-card_date {
@@ -181,7 +185,7 @@
   }
 
   .startup-card_desc {
-    @apply font-normal text-[16px] line-clamp-2 my-3 text-black break-all;
+    @apply font-normal text-[16px] line-clamp-2 my-3 text-black break-all min-h-[48px];
   }
 
   .startup-card_img {
@@ -289,7 +293,7 @@
   }
 
   .card_grid-sm {
-    @apply grid  sm:grid-cols-3 gap-5;
+    @apply grid sm:grid-cols-3 gap-5;
   }
 
   .view-container {
@@ -322,5 +326,24 @@
 
   .text-30-bold {
     @apply text-[30px] font-bold text-black;
+  }
+
+  .horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 1rem 0; /* Add some padding for better spacing */
+    gap: 1rem; /* Add spacing between items */
+    scroll-snap-type: x mandatory; /* Enable smooth snapping */
+  }
+
+  .horizontal-card-grid {
+    display: flex; /* Use flexbox for horizontal layout */
+    gap: 1rem; /* Add spacing between cards */
+    scroll-snap-align: start; /* Ensure each card snaps into view */
+  }
+
+  .horizontal-card-grid > li {
+    flex: 0 0 auto; /* Prevent cards from shrinking */
+    width: 300px; /* Set a fixed width for each card */
   }
 }

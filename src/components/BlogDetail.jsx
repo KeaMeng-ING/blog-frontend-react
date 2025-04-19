@@ -7,6 +7,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import { NavLink } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import ErrorMessage from "./ErrorMessage";
+import { handleApiError } from "../lib/handleApiError";
 
 const BlogDetail = () => {
   const { slug } = useParams(); // Extract the slug from the URL
@@ -38,10 +39,7 @@ const BlogDetail = () => {
         }
       } catch (err) {
         console.error("Error fetching blog:", err);
-        if (err.response?.data === "Forbidden") {
-          logout();
-        }
-        setError("Failed to fetch blog details. Please try again later.");
+        handleApiError(err, logout, setError);
       } finally {
         setLoading(false);
       }
@@ -114,11 +112,13 @@ const BlogDetail = () => {
           <p className="font-semibold text-[30px] text-black">
             From The Same Author
           </p>
-          <ul className="mt-7 card_grid-sm">
-            {sameAuthorBlogs.map((post, i) => (
-              <BlogCard key={i} post={post} />
-            ))}
-          </ul>
+          <div className="horizontal-scroll-container">
+            <ul className="horizontal-card-grid">
+              {sameAuthorBlogs.map((post, i) => (
+                <BlogCard key={i} post={post} className={"startup-card"} />
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="view-container">

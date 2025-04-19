@@ -3,7 +3,7 @@ import { EyeIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import { NavLink } from "react-router-dom";
 
-const BlogCard = memo(({ post }) => {
+const BlogCard = memo(({ post, className }) => {
   const {
     title,
     createdAt,
@@ -16,7 +16,7 @@ const BlogCard = memo(({ post }) => {
   } = post;
 
   return (
-    <NavLink to={`/blog/${slug}`} className="startup-card group">
+    <NavLink to={`/blog/${slug}`} className={`${className} group`}>
       <div className="flex justify-between items-center">
         <p className="startup-card_date text-black">{formatDate(createdAt)}</p>
         <div className="flex gap-1.5">

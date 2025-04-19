@@ -27,12 +27,10 @@ export default function SignUp() {
 
     setLoading(true);
 
-    console.log(userName);
-
     try {
       const response = await axios.post(
         "https://blog-backend-0th4.onrender.com/api/users/signup",
-        { firstName, lastName, userName, email, password }
+        { firstName, lastName, username: userName, email, password }
       );
 
       console.log(response.data);
