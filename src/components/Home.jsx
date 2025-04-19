@@ -3,12 +3,14 @@ import axios from "axios";
 import BlogCard from "./BlogCard";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
+import SearchForm from "./SearchForm";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [posts, setPosts] = useState([]);
 
+  // TODO: We can change all Blog to recommend/trending Blog based on views
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -16,7 +18,8 @@ const Home = () => {
         const response = await axios.get(
           "https://blog-backend-0th4.onrender.com/api/posts"
         );
-        setPosts(response.data.posts);
+        const sortedPosts = response.data.posts.sort((a, b) => b.id - a.id);
+        setPosts(sortedPosts);
       } catch (error) {
         console.error("Error fetching posts:", error);
         setError("Failed to fetch posts. Please try again later.");
@@ -65,7 +68,7 @@ const Home = () => {
           passionate writers
         </p>
 
-        {/* <SearchForm query={query} /> */}
+        <SearchForm query={"sdfdf"} />
       </section>
 
       <section className="section_container">

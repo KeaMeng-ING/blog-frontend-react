@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { useAuthContext } from "../hook/useAuthContext";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const BlogForm = () => {
   // const [pitch, setPitch] = useState("");
@@ -18,7 +19,8 @@ const BlogForm = () => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { logout } = useAuthContext();
+  const { logout, user } = useAuthContext();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,6 +43,7 @@ const BlogForm = () => {
     };
 
     fetchCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -109,12 +112,25 @@ const BlogForm = () => {
       const categoryId = selectedOption?.value;
 
       let imageData = null;
+      // if (image) {
+      //   const base64 = await toBase64(image);
+      //   imageData = base64;
+      // }
+
       if (image) {
-        const base64 = await toBase64(image);
-        imageData = base64;
+        try {
+          imageData = await toBase64(image);
+          console.log("Image converted to base64 successfully");
+        } catch (imgError) {
+          console.error("Error converting image:", imgError);
+          setError(
+            "Failed to process the image. Please try a different image."
+          );
+          setIsPending(false);
+          return;
+        }
       }
 
-      console.log(imageData);
       // Create the request payload
       const blogData = {
         title,
@@ -122,6 +138,7 @@ const BlogForm = () => {
         content,
         categoryId,
         imageUrl: imageData,
+        authorId: user.id,
       };
 
       // Send the blog data as JSON
@@ -135,13 +152,15 @@ const BlogForm = () => {
         }
       );
 
-      alert("Blog submitted successfully!");
+      // alert("Blog submitted successfully!");
       // Optionally reset the form here
     } catch (err) {
       console.error("Error submitting form:", err);
       setError("Failed to submit form. Please try again later.");
     } finally {
       setIsPending(false);
+      navigate("/"); // Redirect to the home page after submission
+      e.target.reset();
     }
   };
 
