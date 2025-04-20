@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import ErrorMessage from "./ErrorMessage";
 import { handleApiError } from "../lib/handleApiError";
+import { useBlogContext } from "../hook/useBlogContext";
 
 const BlogDetail = () => {
   const { slug } = useParams(); // Extract the slug from the URL
@@ -17,20 +18,40 @@ const BlogDetail = () => {
   const [error, setError] = useState("");
   const { logout } = useAuthContext();
   const hasIncrementedView = useRef(false);
+  const { contextPosts } = useBlogContext();
+  console.log(contextPosts);
+
+  // Helper function to shuffle an array
+  const shuffleArray = (array) => {
+    return [...array]
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
+  };
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `https://blog-backend-0th4.onrender.com/api/posts/${slug}`
+        // Find the blog post that matches the slug
+        const foundBlog = contextPosts.find((post) => post.slug === slug);
+        console.log(foundBlog);
+
+        setBlog(foundBlog);
+
+        // Find other posts by the same author
+        const filteredPosts = contextPosts.filter(
+          (post) => post.authorId === foundBlog.authorId && post.slug !== slug
         );
 
-        // Store the blog data
-        setBlog(response.data.post);
-        setSameAuthorBlogs(response.data.postsFromSameAuthor);
+        if (filteredPosts.length > 0) {
+          setSameAuthorBlogs(filteredPosts);
+        } else {
+          // If no other posts by the same author, show random posts
+          setSameAuthorBlogs(shuffleArray(contextPosts).slice(0, 6));
+        }
 
-        // Only increment view if not already viewed and not incremented in this mount
+        // Increment views
         if (!hasIncrementedView.current) {
           hasIncrementedView.current = true; // Mark as attempted
           await axios.put(
@@ -46,9 +67,10 @@ const BlogDetail = () => {
     };
 
     fetchBlog();
-  }, [slug, logout]);
+  }, [slug, logout, contextPosts]);
 
   useEffect(() => {
+    // Reset the view counter when slug changes
     hasIncrementedView.current = false;
   }, [slug]);
 
@@ -88,14 +110,8 @@ const BlogDetail = () => {
                 height={64}
                 className="rounded-full drop-shadow-lg"
               />
-              <div>
-                <p className="text-20-medium">{blog.author.firstName}</p>
-                <p className="text-16-medium !text-black-300">
-                  @{blog.author.firstName} {/* TODO: Update to have username */}
-                </p>
-              </div>
             </NavLink>
-            <p className="category-tag">{blog.category.name}</p>
+            <p className="category-tag">{blog.categoryName}</p>
           </div>
 
           <h3 className="text-[30px] font-bold text-black;">Pitch Details</h3>
@@ -110,7 +126,9 @@ const BlogDetail = () => {
         <hr className="divider" />
         <div className="max-w-4xl mx-auto">
           <p className="font-semibold text-[30px] text-black">
-            From The Same Author
+            {sameAuthorBlogs.some((post) => post.authorId === blog.authorId)
+              ? "More From The Same Author"
+              : "Featured Posts"}
           </p>
           <div className="horizontal-scroll-container">
             <ul className="horizontal-card-grid">

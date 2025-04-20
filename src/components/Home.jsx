@@ -12,7 +12,7 @@ const Home = () => {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [query, setQuery] = useState("");
 
-  // TODO: We can change all Blog to recommend/trending Blog based on views
+  // TODO: but now we should have all posts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -20,8 +20,10 @@ const Home = () => {
         const response = await axios.get(
           "https://blog-backend-0th4.onrender.com/api/posts"
         );
-        const sortedPosts = response.data.posts.sort((a, b) => b.id - a.id);
-        setPosts(sortedPosts);
+        const topViewedPosts = response.data.posts
+          .sort((a, b) => b.views - a.views)
+          .slice(0, 6);
+        setPosts(topViewedPosts);
       } catch (error) {
         console.error("Error fetching posts:", error);
         setError("Failed to fetch posts. Please try again later.");
