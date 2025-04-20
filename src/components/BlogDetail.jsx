@@ -17,6 +17,7 @@ const BlogDetail = () => {
   const [error, setError] = useState("");
   const { logout } = useAuthContext();
   const hasIncrementedView = useRef(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -29,6 +30,7 @@ const BlogDetail = () => {
         // Store the blog data
         setBlog(response.data.post);
         setSameAuthorBlogs(response.data.postsFromSameAuthor);
+        setMessage(response.data.message);
 
         // Only increment view if not already viewed and not incremented in this mount
         if (!hasIncrementedView.current) {
@@ -110,9 +112,7 @@ const BlogDetail = () => {
         <hr className="divider" />
         {sameAuthorBlogs.length > 0 && (
           <div className="max-w-4xl mx-auto">
-            <p className="font-semibold text-[30px] text-black">
-              More From The Same Author
-            </p>
+            <p className="font-semibold text-[30px] text-black">{message}</p>
             <div className="horizontal-scroll-container">
               <ul className="horizontal-card-grid">
                 {sameAuthorBlogs.map((post, i) => (
