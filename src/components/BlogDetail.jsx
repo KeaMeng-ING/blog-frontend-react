@@ -8,7 +8,6 @@ import { NavLink } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import ErrorMessage from "./ErrorMessage";
 import { handleApiError } from "../lib/handleApiError";
-import { useBlogContext } from "../hook/useBlogContext";
 
 const BlogDetail = () => {
   const { slug } = useParams(); // Extract the slug from the URL
@@ -18,16 +17,6 @@ const BlogDetail = () => {
   const [error, setError] = useState("");
   const { logout } = useAuthContext();
   const hasIncrementedView = useRef(false);
-
-  // This is when the author dun have any other blogs
-  const { contextPosts } = useBlogContext();
-  const shuffleArray = (array) => {
-    return array
-      .map((item) => ({ item, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ item }) => item);
-  };
-  const shuffledPosts = shuffleArray(contextPosts).slice(0, 6); // Shuffle and limit to 6 posts
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -119,7 +108,7 @@ const BlogDetail = () => {
           )}
         </div>
         <hr className="divider" />
-        {sameAuthorBlogs.length > 0 ? (
+        {sameAuthorBlogs.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <p className="font-semibold text-[30px] text-black">
               More From The Same Author
@@ -132,21 +121,7 @@ const BlogDetail = () => {
               </ul>
             </div>
           </div>
-        ) : (
-          <div className="max-w-4xl mx-auto">
-            <p className="font-semibold text-[30px] text-black">
-              Featured Post
-            </p>
-            <div className="horizontal-scroll-container">
-              <ul className="horizontal-card-grid">
-                {shuffledPosts.map((post, i) => (
-                  <BlogCard key={i} post={post} className={"startup-card"} />
-                ))}
-              </ul>
-            </div>
-          </div>
         )}
-
         <div className="view-container">
           <div className="absolute -top-2 -right-2">
             <div className="relative">
