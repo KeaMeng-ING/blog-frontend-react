@@ -18,40 +18,30 @@ const BlogDetail = () => {
   const [error, setError] = useState("");
   const { logout } = useAuthContext();
   const hasIncrementedView = useRef(false);
-  const { contextPosts } = useBlogContext();
-  console.log(contextPosts);
 
-  // Helper function to shuffle an array
+  // This is when the author dun have any other blogs
+  const { contextPosts } = useBlogContext();
   const shuffleArray = (array) => {
-    return [...array]
+    return array
       .map((item) => ({ item, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ item }) => item);
   };
+  const shuffledPosts = shuffleArray(contextPosts).slice(0, 6); // Shuffle and limit to 6 posts
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        // Find the blog post that matches the slug
-        const foundBlog = contextPosts.find((post) => post.slug === slug);
-        console.log(foundBlog);
-
-        setBlog(foundBlog);
-
-        // Find other posts by the same author
-        const filteredPosts = contextPosts.filter(
-          (post) => post.authorId === foundBlog.authorId && post.slug !== slug
+        const response = await axios.get(
+          `https://blog-backend-0th4.onrender.com/api/posts/${slug}`
         );
 
-        if (filteredPosts.length > 0) {
-          setSameAuthorBlogs(filteredPosts);
-        } else {
-          // If no other posts by the same author, show random posts
-          setSameAuthorBlogs(shuffleArray(contextPosts).slice(0, 6));
-        }
+        // Store the blog data
+        setBlog(response.data.post);
+        setSameAuthorBlogs(response.data.postsFromSameAuthor);
 
-        // Increment views
+        // Only increment view if not already viewed and not incremented in this mount
         if (!hasIncrementedView.current) {
           hasIncrementedView.current = true; // Mark as attempted
           await axios.put(
@@ -67,10 +57,9 @@ const BlogDetail = () => {
     };
 
     fetchBlog();
-  }, [slug, logout, contextPosts]);
+  }, [slug, logout]);
 
   useEffect(() => {
-    // Reset the view counter when slug changes
     hasIncrementedView.current = false;
   }, [slug]);
 
@@ -110,8 +99,14 @@ const BlogDetail = () => {
                 height={64}
                 className="rounded-full drop-shadow-lg"
               />
+              <div>
+                <p className="text-20-medium">{blog.author.firstName}</p>
+                <p className="text-16-medium !text-black-300">
+                  @{blog.author.firstName} {/* TODO: Update to have username */}
+                </p>
+              </div>
             </NavLink>
-            <p className="category-tag">{blog.categoryName}</p>
+            <p className="category-tag">{blog.category.name}</p>
           </div>
 
           <h3 className="text-[30px] font-bold text-black;">Pitch Details</h3>
@@ -124,20 +119,33 @@ const BlogDetail = () => {
           )}
         </div>
         <hr className="divider" />
-        <div className="max-w-4xl mx-auto">
-          <p className="font-semibold text-[30px] text-black">
-            {sameAuthorBlogs.some((post) => post.authorId === blog.authorId)
-              ? "More From The Same Author"
-              : "Featured Posts"}
-          </p>
-          <div className="horizontal-scroll-container">
-            <ul className="horizontal-card-grid">
-              {sameAuthorBlogs.map((post, i) => (
-                <BlogCard key={i} post={post} className={"startup-card"} />
-              ))}
-            </ul>
+        {sameAuthorBlogs.length > 0 ? (
+          <div className="max-w-4xl mx-auto">
+            <p className="font-semibold text-[30px] text-black">
+              More From The Same Author
+            </p>
+            <div className="horizontal-scroll-container">
+              <ul className="horizontal-card-grid">
+                {sameAuthorBlogs.map((post, i) => (
+                  <BlogCard key={i} post={post} className={"startup-card"} />
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="max-w-4xl mx-auto">
+            <p className="font-semibold text-[30px] text-black">
+              Featured Post
+            </p>
+            <div className="horizontal-scroll-container">
+              <ul className="horizontal-card-grid">
+                {shuffledPosts.map((post, i) => (
+                  <BlogCard key={i} post={post} className={"startup-card"} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
 
         <div className="view-container">
           <div className="absolute -top-2 -right-2">
