@@ -62,6 +62,8 @@ const BlogDetail = () => {
     return <ErrorMessage error={error} />;
   }
 
+  console.log(blog);
+
   return (
     <>
       <section className="pink_container !min-h-[230px]">
@@ -81,29 +83,33 @@ const BlogDetail = () => {
         />
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex justify-between items-center gap-5">
-            <NavLink to="#" className="flex gap-2 items-center mb-3">
+            <NavLink to="#" className="flex gap-5 items-center mb-3">
               {/* TODO: Update user profile */}
               <img
-                src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
+                src={blog.author.imageUrl}
                 alt="avatar"
-                width={64}
-                height={64}
+                width={45}
+                height={45}
                 className="rounded-full drop-shadow-lg"
               />
               <div>
                 <p className="text-20-medium">{blog.author.firstName}</p>
                 <p className="text-16-medium !text-black-300">
-                  @{blog.author.firstName} {/* TODO: Update to have username */}
+                  @{blog.author.username} {/* TODO: Update to have username */}
                 </p>
               </div>
             </NavLink>
             <p className="category-tag">{blog.category.name}</p>
           </div>
 
-          <h3 className="text-[30px] font-bold text-black;">Pitch Details</h3>
+          <h3 className="text-[30px] font-bold text-black;">Blog Details</h3>
           {blog.content ? (
-            <article className="prose max-w-4xl font-work-sans break-all">
-              {blog.content}
+            <article className="prose max-w-4xl font-work-sans break-words">
+              {blog.content.split("\n").map((line, idx) => (
+                <p key={idx} className="mb-4">
+                  {line}
+                </p>
+              ))}
             </article>
           ) : (
             <p className="no-result">No details provided</p>

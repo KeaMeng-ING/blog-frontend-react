@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../hook/useAuthContext";
-import { useParams } from "react-router-dom"; // Import useParams
+import { NavLink, useParams } from "react-router-dom"; // Import useParams
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
@@ -44,7 +44,33 @@ const ProfileDetail = () => {
     }
 
     if (posts.length === 0) {
-      return <p className="text-gray-500">No posts available.</p>;
+      return (
+        <NavLink
+          to="/blog/create"
+          className="flex flex-col items-center justify-center bg-my-primary-100 p-6 rounded-lg shadow-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-16 h-16 text-my-primary mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+          <p className="text-black text-lg font-semibold">
+            No posts available.
+          </p>
+          <p className="text-my-primary text-sm mt-2">
+            Start creating content to showcase your ideas!
+          </p>
+        </NavLink>
+      );
     }
 
     return (
@@ -66,7 +92,7 @@ const ProfileDetail = () => {
         <div className="profile_title">
           {" "}
           <h3 className="text-24-black uppercase text-center line-clamp-1">
-            {user.firstName}
+            {user.firstName} {user.lastName}
           </h3>{" "}
         </div>
 

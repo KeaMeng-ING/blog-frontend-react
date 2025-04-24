@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../hook/useAuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 
 export default function SignUp() {
   const { loading, setLoading, setUser } = useAuthContext();
@@ -14,6 +15,25 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file)); // Generate a preview URL
+    }
+  };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,10 +47,30 @@ export default function SignUp() {
 
     setLoading(true);
 
+    let imageData = null;
+    if (image) {
+      try {
+        imageData = await toBase64(image);
+        console.log("Image converted to base64 successfully");
+      } catch (imgError) {
+        console.error("Error converting image:", imgError);
+        setError("Failed to process the image. Please try a different image.");
+        setIsPending(false);
+        return;
+      }
+    }
+
     try {
       const response = await axios.post(
         "https://blog-backend-0th4.onrender.com/api/users/signup",
-        { firstName, lastName, username: userName, email, password }
+        {
+          firstName,
+          lastName,
+          username: userName,
+          email,
+          password,
+          imageUrl: imageData,
+        }
       );
 
       console.log(response.data);
@@ -71,7 +111,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="bg-my-primary h-screen flex items-center justify-center">
+    <div className="bg-my-primary py-10 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-md">
         <div className="bg-black text-white p-6 text-center">
           <h1 className="text-2xl font-bold">CREATE AN ACCOUNT</h1>
@@ -140,6 +180,48 @@ export default function SignUp() {
               required
             />
           </div>
+          <div className="grid gap-2 ">
+            <label className="font-bold text-black" htmlFor="image">
+              Profile Picture
+            </label>
+            <div className="flex flex-col md:flex-row md:items-center gap-6 relative">
+              {!imagePreview && (
+                <label
+                  htmlFor="file"
+                  className="image-upload cursor-pointer w-full md:w-64 h-32 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 hover:border-blue-500 hover:text-blue-500 transition"
+                >
+                  <span className="text-sm">Choose Image File</span>
+                  <input
+                    id="file"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    required
+                  />
+                </label>
+              )}
+
+              {imagePreview && (
+                <div className="relative w-full md:w-64 h-32">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-xl border shadow-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setImagePreview(null)} // make sure this state exists
+                    className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-1 shadow"
+                  >
+                    <X className="w-4 h-4 text-gray-600" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="grid gap-2">
             <label className="font-bold text-black" htmlFor="password">
               Password
@@ -152,6 +234,7 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
           </div>
           <div className="grid gap-2">
@@ -166,6 +249,7 @@ export default function SignUp() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
           </div>
           <div>

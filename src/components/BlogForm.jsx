@@ -188,14 +188,14 @@ const BlogForm = () => {
 
         <div className="flex-col">
           <label htmlFor="description" className="startup-form_label">
-            Description
+            Subtitle
           </label>
           <textarea
             id="description"
             name="description"
             className="startup-form_textarea"
             required
-            placeholder="Blog Description"
+            placeholder="Blog Subtitle"
           />
 
           {/* {errors.description && (

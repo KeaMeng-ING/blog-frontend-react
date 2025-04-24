@@ -317,7 +317,7 @@
   }
 
   .profile_image {
-    @apply rounded-full object-cover border-[3px] border-black;
+    @apply rounded-full border-[3px] border-black w-[220px] h-[220px] object-cover;
   }
 
   .text-30-extrabold {

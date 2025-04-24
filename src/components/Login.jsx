@@ -30,6 +30,7 @@ export default function Login() {
         JSON.stringify({
           id: response.data.id,
           firstName: response.data.firstName,
+          lastName: response.data.lastName,
           imageUrl: response.data.imageUrl,
           userName: response.data.username,
         })
@@ -41,6 +42,7 @@ export default function Login() {
 
       setUser({
         firstName: response.data.firstName,
+        lastName: response.data.lastName,
         id: response.data.id,
         userName: response.data.username,
         imageUrl: response.data.imageUrl,

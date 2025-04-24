@@ -13,7 +13,12 @@ const BlogCard = memo(({ post, className }) => {
     views,
     categoryName,
     slug,
+    authorProfileImage,
   } = post;
+
+  const formatViews = (views) => {
+    return views >= 1000 ? `${(views / 1000).toFixed(1)}k` : views;
+  };
 
   return (
     <NavLink to={`/blog/${slug}`} className={`${className} group`}>
@@ -21,8 +26,9 @@ const BlogCard = memo(({ post, className }) => {
         <p className="startup-card_date text-black">{formatDate(createdAt)}</p>
         <div className="flex gap-1.5">
           <EyeIcon className="size-6 text-my-primary" />
-          <span className="text-16-medium text-black">{views}</span>
-          {/* TODO: make views update everytime they click on it */}
+          <span className="text-16-medium text-black">
+            {formatViews(views)}
+          </span>
         </div>
       </div>
 
@@ -39,14 +45,13 @@ const BlogCard = memo(({ post, className }) => {
           </div>
         </div>
         <div>
-          {/* <Image
-            src={image_url}
+          <img
+            src={authorProfileImage}
             alt={author}
             width={48}
             height={48}
             className="rounded-full"
-          /> */}
-          <h1>author</h1>
+          />
         </div>
       </div>
 
