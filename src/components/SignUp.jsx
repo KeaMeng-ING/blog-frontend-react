@@ -62,7 +62,7 @@ export default function SignUp() {
 
     try {
       const response = await axios.post(
-        "https://blog-backend-0th4.onrender.com/api/users/signup",
+        "https://blog-backend-a3p6.onrender.com/api/users/signup",
         {
           firstName,
           lastName,

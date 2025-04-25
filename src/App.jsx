@@ -9,6 +9,7 @@ import BlogForm from "./components/BlogForm.jsx";
 import BlogDetail from "./components/BlogDetail.jsx";
 import SignUp from "./components/SignUp.jsx";
 import ProfileDetail from "./components/ProfileDetail.jsx";
+import Setting from "./components/Setting.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               path="/profile/:username"
               element={<ProfileDetail />}
             ></Route>
+            <Route path="/settings" element={<Setting />}></Route>
           </Route>
           <Route path="/" element={<Home />}></Route>
         </Route>

@@ -24,7 +24,7 @@ const BlogDetail = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://blog-backend-0th4.onrender.com/api/posts/${slug}`
+          `https://blog-backend-a3p6.onrender.com/api/posts/${slug}`
         );
 
         // Store the blog data
@@ -36,7 +36,7 @@ const BlogDetail = () => {
         if (!hasIncrementedView.current) {
           hasIncrementedView.current = true; // Mark as attempted
           await axios.put(
-            `https://blog-backend-0th4.onrender.com/api/posts/${slug}/incrementViews`
+            `https://blog-backend-a3p6.onrender.com/api/posts/${slug}/incrementViews`
           );
         }
       } catch (err) {
@@ -122,7 +122,12 @@ const BlogDetail = () => {
             <div className="horizontal-scroll-container">
               <ul className="horizontal-card-grid">
                 {sameAuthorBlogs.map((post, i) => (
-                  <BlogCard key={i} post={post} className={"startup-card"} />
+                  <BlogCard
+                    key={i}
+                    post={post}
+                    className={"startup-card"}
+                    profileImage={blog.author.imageUrl}
+                  />
                 ))}
               </ul>
             </div>

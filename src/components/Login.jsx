@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://blog-backend-0th4.onrender.com/api/users/login",
+        "https://blog-backend-a3p6.onrender.com/api/users/login",
         { email, password }
       );
 
@@ -33,6 +33,8 @@ export default function Login() {
           lastName: response.data.lastName,
           imageUrl: response.data.imageUrl,
           userName: response.data.username,
+          email: response.data.email,
+          bio: response.data.bio,
         })
       );
 
@@ -41,11 +43,13 @@ export default function Login() {
       ] = `Bearer ${response.data.token}`;
 
       setUser({
+        id: response.data.id,
         firstName: response.data.firstName,
         lastName: response.data.lastName,
-        id: response.data.id,
-        userName: response.data.username,
         imageUrl: response.data.imageUrl,
+        userName: response.data.username,
+        email: response.data.email,
+        bio: response.data.bio,
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {

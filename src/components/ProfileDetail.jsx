@@ -20,7 +20,7 @@ const ProfileDetail = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://blog-backend-0th4.onrender.com/api/posts/profile/" + username
+          "https://blog-backend-a3p6.onrender.com/api/posts/profile/" + username
         );
         setPosts(response.data.posts);
       } catch (error) {

@@ -3,7 +3,7 @@ import { EyeIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import { NavLink } from "react-router-dom";
 
-const BlogCard = memo(({ post, className }) => {
+const BlogCard = memo(({ post, className, profileImage = "" }) => {
   const {
     title,
     createdAt,
@@ -46,11 +46,9 @@ const BlogCard = memo(({ post, className }) => {
         </div>
         <div>
           <img
-            src={authorProfileImage}
+            src={authorProfileImage || profileImage}
             alt={author}
-            width={48}
-            height={48}
-            className="rounded-full"
+            className="rounded-full w-[48px] h-[48px] object-cover"
           />
         </div>
       </div>
