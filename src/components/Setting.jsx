@@ -7,10 +7,9 @@ import ErrorMessage from "./ErrorMessage";
 
 const Setting = () => {
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const { user, logout, setUser } = useAuthContext();
   const [activeTab, setActiveTab] = useState("personal");
   const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [userData, setUserData] = useState({
@@ -20,8 +19,10 @@ const Setting = () => {
     userName: user?.userName || "",
     imageUrl: user?.imageUrl || "",
     email: user?.email || "",
-    bio: user?.bio || "", // TODO: Currently dun have this in the backend
+    bioProfile: user?.bioProfile || "", // TODO: Currently dun have this in the backend
   });
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   console.log(user);
 
@@ -37,9 +38,12 @@ const Setting = () => {
         ...prevUserData,
         ...user,
       }));
+      // Set initial imagePreview if user has an imageUrl
+      if (user.imageUrl) {
+        setImagePreview(user.imageUrl);
+      }
     }
   }, [user]);
-  // console.log(userData);
 
   const handlePersonalInfoChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -57,47 +61,99 @@ const Setting = () => {
     });
   };
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserData({
-          ...userData,
-          profileImage: reader.result,
-        });
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file)); // Generate a preview URL
     }
+  };
+
+  // Function to handle removing the current image
+  const handleRemoveImage = () => {
+    setUserData({ ...userData, imageUrl: "" });
+    setImage(null);
+    setImagePreview(null);
   };
 
   const handlePersonalInfoSubmit = async (e) => {
     e.preventDefault();
     try {
-      setSaving(true);
+      setLoading(true);
       setError("");
       setSuccessMessage("");
 
+      // Create a copy of userData that we'll update and send
+      const updatedUserData = { ...userData };
+
+      // Process the image if there's a new one
+      if (image) {
+        try {
+          const imageData = await toBase64(image);
+          console.log("Image converted to base64 successfully");
+          // Update the userData copy with the new image
+          updatedUserData.imageUrl = imageData;
+          console.log(imageData);
+        } catch (imgError) {
+          console.error("Error converting image:", imgError);
+          setError(
+            "Failed to process the image. Please try a different image."
+          );
+          setLoading(false);
+          return;
+        }
+      }
+
+      console.log(updatedUserData);
+
       // Replace with your actual API endpoint
       const response = await axios.put(
-        "https://blog-backend-a3p6.onrender.com/api/user/settings",
-        userData,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+        "https://blog-backend-a3p6.onrender.com/api/users/settings",
+        updatedUserData
       );
+
+      console.log(response);
+
+      // Update the local state with the updated data
+      setUserData(updatedUserData);
 
       setSuccessMessage("Personal information updated successfully!");
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
+
+      // Update in authContext
+      const newUser = {
+        ...user,
+        firstName: updatedUserData.firstName,
+        lastName: updatedUserData.lastName,
+        userName: updatedUserData.userName,
+        imageUrl: updatedUserData.imageUrl,
+        bioProfile: updatedUserData.bioProfile,
+      };
+      setUser(newUser);
+
+      // Update localStorage to persist changes
+      localStorage.setItem("user", JSON.stringify(newUser));
+
+      navigate("/profile/" + updatedUserData.userName);
     } catch (error) {
       console.error("Error updating settings:", error);
       setError("Failed to update settings. Please try again.");
+      if (error.response?.data === "Forbidden") {
+        console.log("in forbidden");
+        logout(); //TODO: To be updated with message
+      }
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
@@ -110,21 +166,18 @@ const Setting = () => {
     }
 
     try {
-      setSaving(true);
       setError("");
       setSuccessMessage("");
+      setLoading(true);
 
       // Replace with your actual API endpoint
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.put(
-        "https://blog-backend-a3p6.onrender.com/api/user/change-password",
+        "https://blog-backend-a3p6.onrender.com/api/users/change-password",
         {
-          currentPassword: passwordData.currentPassword,
+          id: user.id,
+          oldPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
         }
       );
 
@@ -146,7 +199,7 @@ const Setting = () => {
           "Failed to update password. Please try again."
       );
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
@@ -204,25 +257,23 @@ const Setting = () => {
               <div className="flex-col">
                 <label className="startup-form_label">Profile Picture</label>
                 <div className="mt-3 flex items-center">
-                  {userData.imageUrl ? (
+                  {imagePreview ? (
                     <div className="relative">
                       <img
-                        src={userData.imageUrl}
+                        src={imagePreview}
                         alt="Profile"
                         className="profile_image w-32 h-32 object-cover border-2 border-black"
                       />
                       <button
                         type="button"
-                        onClick={() =>
-                          setUserData({ ...userData, imageUrl: "" })
-                        }
+                        onClick={handleRemoveImage}
                         className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
                       >
                         ×
                       </button>
                     </div>
                   ) : (
-                    <label className="image-upload">
+                    <label className="image-upload cursor-pointer">
                       <input
                         type="file"
                         accept="image/*"
@@ -254,7 +305,7 @@ const Setting = () => {
               <div className="flex-col">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="startup-form_label">
+                    <label htmlFor="firstName" className="startup-form_label">
                       First Name
                     </label>
                     <input
@@ -263,13 +314,13 @@ const Setting = () => {
                       name="firstName"
                       value={userData.firstName}
                       onChange={handlePersonalInfoChange}
-                      placeholder="Your name"
+                      placeholder="Your first name"
                       className="startup-form_input w-full"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="name" className="startup-form_label">
+                    <label htmlFor="lastName" className="startup-form_label">
                       Last Name
                     </label>
                     <input
@@ -278,7 +329,7 @@ const Setting = () => {
                       name="lastName"
                       value={userData.lastName}
                       onChange={handlePersonalInfoChange}
-                      placeholder="Your name"
+                      placeholder="Your last name"
                       className="startup-form_input w-full"
                       required
                     />
@@ -307,13 +358,13 @@ const Setting = () => {
               </div>
 
               <div className="flex-col">
-                <label htmlFor="bio" className="startup-form_label">
+                <label htmlFor="bioProfile" className="startup-form_label">
                   Bio
                 </label>
                 <textarea
-                  id="bio"
-                  name="bio"
-                  value={userData.bio}
+                  id="bioProfile"
+                  name="bioProfile"
+                  value={userData.bioProfile}
                   onChange={handlePersonalInfoChange}
                   placeholder="Tell us about yourself"
                   className="startup-form_textarea w-full min-h-[120px]"
@@ -324,9 +375,9 @@ const Setting = () => {
                 <button
                   type="submit"
                   className="startup-form_btn bg-my-primary hover:bg-my-primary-100 transition-colors"
-                  disabled={saving}
+                  disabled={loading}
                 >
-                  {saving ? "Saving..." : "Save Changes"}
+                  {loading ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </form>
@@ -388,10 +439,10 @@ const Setting = () => {
               <div className="flex justify-end items-center mt-8">
                 <button
                   type="submit"
-                  className="startup-form_btn bg-my-primary hover:bg-my-primary-100 transition-colors"
-                  disabled={saving}
+                  className="startup-form_btn text-white bg-my-primary hover:bg-my-primary-100 transition-colors"
+                  disabled={loading}
                 >
-                  {saving ? "Updating..." : "Update Password"}
+                  {loading ? "Updating..." : "Update Password"}
                 </button>
               </div>
             </form>

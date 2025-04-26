@@ -14,6 +14,7 @@ const ProfileDetail = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
+  const [fetchUser, setFetchUser] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -23,9 +24,9 @@ const ProfileDetail = () => {
           "https://blog-backend-a3p6.onrender.com/api/posts/profile/" + username
         );
         setPosts(response.data.posts);
+        setFetchUser(response.data.user);
       } catch (error) {
         console.error("Error fetching posts:", error);
-        // setError("Failed to fetch posts. Please try again later.");
         handleApiError(error, logout, setError);
       } finally {
         setLoading(false);
@@ -34,11 +35,10 @@ const ProfileDetail = () => {
     fetchPosts();
   }, [username]);
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
   const renderBlogSection = () => {
-    if (loading) {
-      return <LoadingSpinner />;
-    }
-
     if (error) {
       return <ErrorMessage error={error} />;
     }
@@ -80,6 +80,7 @@ const ProfileDetail = () => {
             key={post.id}
             post={post}
             className={"profile-startup-card"}
+            profileImage={fetchUser.imageUrl}
           />
         ))}
       </ul>
@@ -90,21 +91,22 @@ const ProfileDetail = () => {
     <section className="profile_container">
       <div className="profile_card">
         <div className="profile_title">
-          {" "}
           <h3 className="text-24-black uppercase text-center line-clamp-1">
-            {user.firstName} {user.lastName}
-          </h3>{" "}
+            {fetchUser.firstName} {fetchUser.lastName}
+          </h3>
         </div>
 
         <img
-          src={user.imageUrl}
-          alt={user.userName}
+          src={fetchUser.imageUrl}
+          alt={fetchUser.username}
           width={220}
           height={220}
           className="profile_image"
         />
 
-        <p className="text-30-extrabold mt-7 text-center">@{user?.userName}</p>
+        <p className="text-30-extrabold mt-7 text-center">
+          @{fetchUser?.username}
+        </p>
         {/* TODO: Should be Bio */}
         <p className="mt-1 text-center font-normal text-sm text-white">
           Entrepreneur
@@ -112,7 +114,7 @@ const ProfileDetail = () => {
       </div>
       <div className="flex-1 flex flex-col gap-5 lg:-mt-5">
         <p className="text-30-bold">
-          {user?.userName === username ? "Your" : "All"} Startups
+          {fetchUser?.username === user.username ? "Your" : "All"} Blogs
         </p>
         {renderBlogSection()}
       </div>

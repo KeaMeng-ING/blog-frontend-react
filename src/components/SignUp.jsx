@@ -17,7 +17,6 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [isPending, setIsPending] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -55,7 +54,6 @@ export default function SignUp() {
       } catch (imgError) {
         console.error("Error converting image:", imgError);
         setError("Failed to process the image. Please try a different image.");
-        setIsPending(false);
         return;
       }
     }
@@ -235,6 +233,7 @@ export default function SignUp() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="new-password"
+              minLength={8}
             />
           </div>
           <div className="grid gap-2">
@@ -250,6 +249,7 @@ export default function SignUp() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               autoComplete="new-password"
+              minLength={8}
             />
           </div>
           <div>

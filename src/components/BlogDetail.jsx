@@ -83,19 +83,19 @@ const BlogDetail = () => {
         />
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex justify-between items-center gap-5">
-            <NavLink to="#" className="flex gap-5 items-center mb-3">
-              {/* TODO: Update user profile */}
+            <NavLink
+              to={"/profile/" + blog.author.username}
+              className="flex gap-5 items-center mb-3"
+            >
               <img
                 src={blog.author.imageUrl}
                 alt="avatar"
-                width={45}
-                height={45}
-                className="rounded-full drop-shadow-lg"
+                className="rounded-full drop-shadow-lg w-[48px] h-[48px] object-cover"
               />
               <div>
                 <p className="text-20-medium">{blog.author.firstName}</p>
                 <p className="text-16-medium !text-black-300">
-                  @{blog.author.username} {/* TODO: Update to have username */}
+                  @{blog.author.username}
                 </p>
               </div>
             </NavLink>

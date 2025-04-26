@@ -34,7 +34,7 @@ export default function Login() {
           imageUrl: response.data.imageUrl,
           userName: response.data.username,
           email: response.data.email,
-          bio: response.data.bio,
+          bioProfile: response.data.bioProfile,
         })
       );
 
@@ -49,7 +49,7 @@ export default function Login() {
         imageUrl: response.data.imageUrl,
         userName: response.data.username,
         email: response.data.email,
-        bio: response.data.bio,
+        bioProfile: response.data.bioProfile,
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {
