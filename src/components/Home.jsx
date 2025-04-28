@@ -25,6 +25,7 @@ const Home = () => {
         const sortedPosts = response.data.posts.sort(
           (a, b) => b.views - a.views
         );
+
         setAllPosts(sortedPosts);
       } catch (error) {
         console.error("Error fetching posts:", error);

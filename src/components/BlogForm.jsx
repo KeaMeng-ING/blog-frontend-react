@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import ReactQuill from "react-quill"; // Import React Quill
 import { useState } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
@@ -19,6 +21,7 @@ const BlogForm = () => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [content, setContent] = useState(""); // State for rich text content
   const { logout, user } = useAuthContext();
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -88,7 +91,6 @@ const BlogForm = () => {
       // Get form values
       const title = e.target.title.value;
       const subtitle = e.target.description.value; // Using description as subtitle
-      const content = e.target.content.value;
 
       // Validate inputs
       if (!title) {
@@ -112,10 +114,6 @@ const BlogForm = () => {
       const categoryId = selectedOption?.value;
 
       let imageData = null;
-      // if (image) {
-      //   const base64 = await toBase64(image);
-      //   imageData = base64;
-      // }
 
       if (image) {
         try {
@@ -264,13 +262,14 @@ const BlogForm = () => {
           <label htmlFor="content" className="startup-form_label">
             Content
           </label>
-          <textarea
-            id="content"
-            name="content"
-            className="startup-form_textarea"
-            required
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={setContent}
             placeholder="Write your blog content here..."
-          ></textarea>
+            className="bg-white h-50 mb-10 mt-3"
+            // style={{ height: "200px" }}
+          />
         </div>
 
         <button

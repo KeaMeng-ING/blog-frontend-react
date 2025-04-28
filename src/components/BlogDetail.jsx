@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import ErrorMessage from "./ErrorMessage";
 import { handleApiError } from "../lib/handleApiError";
+import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
 
 const BlogDetail = () => {
   const { slug } = useParams(); // Extract the slug from the URL
@@ -104,13 +105,12 @@ const BlogDetail = () => {
 
           <h3 className="text-[30px] font-bold text-black;">Blog Details</h3>
           {blog.content ? (
-            <article className="prose max-w-4xl font-work-sans break-words">
-              {blog.content.split("\n").map((line, idx) => (
-                <p key={idx} className="mb-4">
-                  {line}
-                </p>
-              ))}
-            </article>
+            <article
+              className="prose max-w-4xl text-[18px]/6 break-words article-content"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(blog.content), // Sanitize the HTML content
+              }}
+            ></article>
           ) : (
             <p className="no-result">No details provided</p>
           )}
