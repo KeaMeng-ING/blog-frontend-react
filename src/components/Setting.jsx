@@ -116,7 +116,7 @@ const Setting = () => {
 
       // Replace with your actual API endpoint
       const response = await axios.put(
-        "https://blog-backend-a3p6.onrender.com/api/users/settings",
+        "http://localhost:8080/api/users/settings",
         updatedUserData
       );
 
@@ -173,7 +173,7 @@ const Setting = () => {
       // Replace with your actual API endpoint
       // eslint-disable-next-line no-unused-vars
       const response = await axios.put(
-        "https://blog-backend-a3p6.onrender.com/api/users/change-password",
+        "http://localhost:8080/api/users/change-password",
         {
           id: user.id,
           oldPassword: passwordData.currentPassword,

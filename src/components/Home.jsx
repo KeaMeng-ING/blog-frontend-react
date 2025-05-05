@@ -17,9 +17,7 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          "https://blog-backend-a3p6.onrender.com/api/posts"
-        );
+        const response = await axios.get("http://localhost:8080/api/posts");
 
         // Sort all posts by views
         const sortedPosts = response.data.posts.sort(
@@ -132,7 +130,7 @@ const Home = () => {
         </p>
         {renderBlogSection()}
         <div className="mt-10 text-center">
-          {shouldShowViewAllButton() && (
+          {!loading && shouldShowViewAllButton() && (
             <button
               onClick={handleViewAllBlogs}
               className="bg-my-primary text-white px-6 py-2 rounded-md font-bold hover:bg-my-primary-100 hover:text-my-primary duration-200"

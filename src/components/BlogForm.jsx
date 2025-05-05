@@ -30,7 +30,7 @@ const BlogForm = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://blog-backend-a3p6.onrender.com/api/posts/category"
+          "http://localhost:8080/api/posts/category"
         );
         console.log(response.data.categories);
         setCategories(response.data.categories);
@@ -140,15 +140,11 @@ const BlogForm = () => {
       };
 
       // Send the blog data as JSON
-      await axios.post(
-        "https://blog-backend-a3p6.onrender.com/api/posts",
-        blogData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.post("http://localhost:8080/api/posts", blogData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       // alert("Blog submitted successfully!");
       // Optionally reset the form here
