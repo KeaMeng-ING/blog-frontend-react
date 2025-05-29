@@ -61,12 +61,22 @@ export default function Navbar() {
                       Profile
                     </NavLink>
                     <NavLink
+                      to="http://localhost:5174/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      Admin Page
+                    </NavLink>
+                    <NavLink
                       to="/blog/create"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       Create Blog
                     </NavLink>
+
                     <NavLink
                       to="/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

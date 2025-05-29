@@ -17,7 +17,9 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8080/api/posts");
+        const response = await axios.get(
+          "https://blog-backend-a3p6.onrender.com/api/posts"
+        );
 
         // Sort all posts by views
         const sortedPosts = response.data.posts.sort(

@@ -52,7 +52,9 @@ const Comment = ({
 
     try {
       // Make API call to delete the comment
-      await axios.delete(`http://localhost:8080/api/comments/${comment.id}`);
+      await axios.delete(
+        `https://blog-backend-a3p6.onrender.com/api/comments/${comment.id}`
+      );
 
       // Close the modal
       setIsDeleteModalOpen(false);

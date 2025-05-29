@@ -29,7 +29,7 @@ const BlogDetail = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:8080/api/posts/${slug}`
+          `https://blog-backend-a3p6.onrender.com/api/posts/${slug}`
         );
 
         // Store the blog data
@@ -42,7 +42,7 @@ const BlogDetail = () => {
         if (!hasIncrementedView.current) {
           hasIncrementedView.current = true; // Mark as attempted
           await axios.put(
-            `http://localhost:8080/api/posts/${slug}/incrementViews`
+            `https://blog-backend-a3p6.onrender.com/api/posts/${slug}/incrementViews`
           );
         }
       } catch (err) {
@@ -98,7 +98,7 @@ const BlogDetail = () => {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:8080/api/comments",
+        "https://blog-backend-a3p6.onrender.com/api/comments",
         data
       );
 

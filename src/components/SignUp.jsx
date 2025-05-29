@@ -60,7 +60,7 @@ export default function SignUp() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/signup",
+        "https://blog-backend-a3p6.onrender.com/api/users/signup",
         {
           firstName,
           lastName,

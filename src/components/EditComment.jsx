@@ -28,7 +28,7 @@ const EditComment = ({ comment, onCancel, onUpdate }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8080/api/comments",
+        "https://blog-backend-a3p6.onrender.com/api/comments",
         data
       );
       console.log(response.data);
