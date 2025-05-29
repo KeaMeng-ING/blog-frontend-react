@@ -85,7 +85,7 @@ const Home = () => {
     }
 
     return (
-      <ul className="mt-7 card_grid">
+      <ul className="mt-7  card_grid">
         {displayedPosts.map((post) => (
           <BlogCard key={post.id} post={post} className={"startup-card"} />
         ))}
