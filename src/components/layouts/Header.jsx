@@ -61,7 +61,7 @@ export default function Navbar() {
                       Profile
                     </NavLink>
                     <NavLink
-                      to="http://localhost:5174/"
+                      to="https://blog-admin-page-tau.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
