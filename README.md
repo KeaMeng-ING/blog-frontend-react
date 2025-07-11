@@ -1,12 +1,37 @@
-# React + Vite
+# 📚 Blog Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-featured blog application that allows users to **Create**, **Read**, **Update**, and **Delete** (CRUD) blog posts. It includes user authentication, a responsive modern design, a clean user interface, and an admin page for managing posts and users.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ User Authentication (Register, Login, Logout)
+- 📝 CRUD operations for blog posts
+- 🔒 Admin panel for managing posts and users
+- 📱 Responsive design with Tailwind CSS
+- 🎨 Clean and modern UI
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React.js, Tailwind CSS
+- **Backend:** Node.js, Express
+- **Database:** PostgreSQL
+
+## 🔗 Live Demo
+
+👉 [Live Application](https://blog-frontend-react-one.vercel.app/)
+
+## 📂 Source Code
+
+- [Frontend Repository](https://github.com/KeaMeng-ING/blog-frontend-react)
+- [Backend Repository](https://github.com/KeaMeng-ING/blog-backend)
+- [Admin Repository](https://github.com/KeaMeng-ING/blog-admin-page)
+
+## ⚙️ Getting Started
+
+Follow these steps to run the project locally.
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/KeaMeng-ING/blog-frontend-react.git
+```
