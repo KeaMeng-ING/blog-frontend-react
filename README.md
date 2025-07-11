@@ -35,3 +35,31 @@ Follow these steps to run the project locally.
 ```bash
 git clone https://github.com/KeaMeng-ING/blog-frontend-react.git
 ```
+
+### 2️⃣ Install Dependencies
+
+```bash
+cd blog-frontend-react
+npm install
+```
+
+### 3️⃣ Start the Frontend
+
+```bash
+npm run dev
+```
+
+### 4️⃣ Backend Setup
+
+Set up the backend (Node.js + Express) and connect it to your PostgreSQL database. Make sure to:
+
+Configure your .env with database credentials and JWT secret.
+
+Run migrations or create tables if needed.
+
+### 5️⃣ Backend Setup
+
+```bash
+npm install
+npm start
+```
